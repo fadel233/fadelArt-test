@@ -26,7 +26,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 # ========= Image Dev =========
 FROM base AS dev
-ENV APP_ENV=dev
+#ENV APP_ENV=dev
 # Rien à copier : on montera le code en volume
 EXPOSE 8080
+
 CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
