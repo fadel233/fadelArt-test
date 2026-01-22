@@ -32,6 +32,7 @@ ENV APP_ENV=prod
 COPY ./app /app
 
 RUN composer install --no-dev --optimize-autoloader \
+ && rm -rf var/cache/* \
  && php bin/console cache:clear --env=prod \
  && php bin/console cache:warmup --env=prod
 
