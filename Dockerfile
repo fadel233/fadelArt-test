@@ -9,17 +9,17 @@ RUN apk add --no-cache \
  && docker-php-ext-install -j$(nproc) intl pdo_mysql opcache
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
-COPY ./Caddyfile /etc/caddy/Caddyfile
+COPY Caddyfile /etc/caddy/Caddyfile
+
 
 # ========= PROD =========
 FROM base AS prod
 
-WORKDIR /app/app
-
 ENV APP_ENV=prod
 ENV APP_DEBUG=0
 
-COPY app/ /app/app
+# ⚠️ Symfony est à la racine /app
+COPY app/ /app
 
 RUN composer install \
     --no-dev \
