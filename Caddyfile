@@ -4,12 +4,16 @@
 
 :8080 {
   root * /app/public
-
   encode gzip zstd
 
-  php_server {
-    index index.php
+  @static {
+    file
+  }
+  handle @static {
+    file_server
   }
 
-  file_server
+  handle {
+    php_server
+  }
 }

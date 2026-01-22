@@ -37,3 +37,6 @@ RUN composer install --no-dev --optimize-autoloader \
 
 EXPOSE 8080
 CMD ["sh", "-c", "php bin/console doctrine:migrations:migrate --no-interaction && frankenphp run --config /etc/caddy/Caddyfile"]
+
+# ========= Default pour Railway =========
+FROM prod
