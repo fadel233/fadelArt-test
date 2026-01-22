@@ -3,7 +3,8 @@
 }
 
 :8080 {
-  root * /app/app/public
+  root * /app/public
+
   encode gzip zstd
 
   php_server {
