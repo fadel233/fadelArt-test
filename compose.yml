@@ -1,37 +1,37 @@
 services:
 
   db:
-    image: mysql:8.0
-    container_name: blog_db          # ← Changer
-    command: --default-authentication-plugin=mysql_native_password
+    image: postgres:15-alpine
+    container_name: blog_db
     environment:
-      MYSQL_DATABASE: blog_db        # ← Changer
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      POSTGRES_DB: blog_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "3308:3306"                  # ← Changer le port (si 3308 est déjà utilisé)
+      - "5432:5432"
     volumes:
-      - dbdata:/var/lib/mysql
+      - dbdata:/var/lib/postgresql/data
 
-  phpmyadmin:
-    image: phpmyadmin
+  adminer:
+    image: adminer
+    container_name: blog_adminer
     ports:
-      - "8083:80"                    # ← Changer (8080 déjà pris)
+      - "8084:8080"
     depends_on:
       - db
     environment:
-      - PMA_HOST=blog_db             # ← Changer (même nom que container_name)
-      - UPLOAD_LIMIT=64M
+      - ADMINER_DEFAULT_SERVER=blog_db
 
   app:
     build:
       context: .
       dockerfile: Dockerfile
       target: dev
-    container_name: blog_app         # ← Changer
+    container_name: blog_app
     volumes:
       - ./app:/app
     ports:
-      - "8008:8080"                  # ← Changer (8001 déjà pris)
+      - "8008:8080"
     env_file:
       - .env.docker
     environment:
@@ -44,10 +44,10 @@ services:
 
   mailpit:
     image: axllent/mailpit:latest
-    container_name: blog_mailpit     # ← Changer
+    container_name: blog_mailpit
     ports:
-      - "8028:8025"                  # ← Changer (8025 peut-être pris)
-      - "1028:1025"                  # ← Changer
+      - "8028:8025"
+      - "1028:1025"
 
 volumes:
   dbdata:
