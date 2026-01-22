@@ -18,7 +18,8 @@ FROM base AS prod
 ENV APP_ENV=prod
 ENV APP_DEBUG=0
 
-COPY . /app
+COPY app/ /app
+
 
 RUN composer install \
     --no-dev \
