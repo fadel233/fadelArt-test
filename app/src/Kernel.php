@@ -13,12 +13,10 @@ class Kernel extends BaseKernel
     {
         $contents = require $this->getProjectDir().'/config/bundles.php';
         foreach ($contents as $class => $envs) {
-            // Skip si le bundle n'existe pas en prod
-            if ($this->environment === 'prod' && !class_exists($class)) {
-                continue;
-            }
             if ($envs[$this->environment] ?? $envs['all'] ?? false) {
-                yield new $class();
+                if (class_exists($class)) {
+                    yield new $class();
+                }
             }
         }
     }
